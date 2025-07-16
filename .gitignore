@@ -33,6 +33,7 @@ coverage/
 
 # IDEs and editors
 .vscode/
+.vs/
 .idea/
 *.swp
 *.swo
