@@ -34,7 +34,7 @@ A simplified Electronic Medical Records (EMR) system built with .NET Core backen
 1. **Clone the repository**
    ```bash
    git clone <repository-url>
-   cd emr-system
+   cd emr-test-task
    ```
 
 2. **Run with Docker Compose**
@@ -276,7 +276,3 @@ For production use, consider adding:
 - Integration tests for API endpoints
 - Component tests for React components
 - End-to-end testing with tools like Cypress
-
-## License
-
-This project is created for educational/demonstration purposes.
