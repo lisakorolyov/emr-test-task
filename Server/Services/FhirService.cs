@@ -15,8 +15,23 @@ namespace EMR.Server.Services
 
     public class FhirService : IFhirService
     {
+        private readonly ILogger<FhirService> _logger;
+
+        public FhirService(ILogger<FhirService> logger)
+        {
+            _logger = logger;
+        }
+
         public Patient EntityToPatient(PatientEntity entity)
         {
+            _logger.LogDebug($"{nameof(entity.Address)}: {entity.Address}\n" +
+                $"{nameof(entity.BirthDate)}: {entity.BirthDate}\n" +
+                $"{nameof(entity.Email)}: {entity.Email}\n" +
+                $"{nameof(entity.FamilyName)}: {entity.FamilyName}\n" +
+                $"{nameof(entity.Gender)}: {entity.Gender}\n" +
+                $"{nameof(entity.GivenName)}: {entity.GivenName}\n" +
+                $"{nameof(entity.Phone)}: {entity.Phone}\n");
+
             var patient = new Patient
             {
                 Id = entity.Id,
@@ -32,16 +47,19 @@ namespace EMR.Server.Services
                 Family = entity.FamilyName,
                 Given = new[] { entity.GivenName }
             });
+            _logger.LogDebug($"{nameof(patient.Name)}: {patient.Name}");
 
             if (DateTime.TryParse(entity.BirthDate.ToString("yyyy-MM-dd"), out var birthDate))
             {
                 patient.BirthDate = entity.BirthDate.ToString("yyyy-MM-dd");
             }
+            _logger.LogDebug($"{nameof(patient.BirthDate)}: {patient.BirthDate}");
 
             if (Enum.TryParse<AdministrativeGender>(entity.Gender, true, out var gender))
             {
                 patient.Gender = gender;
             }
+            _logger.LogDebug($"{nameof(patient.Gender)}: {patient.Gender}");
 
             if (!string.IsNullOrEmpty(entity.Phone))
             {
@@ -52,6 +70,7 @@ namespace EMR.Server.Services
                     Use = ContactPoint.ContactPointUse.Mobile
                 });
             }
+            _logger.LogDebug($"{nameof(patient.Telecom)}: {patient.Telecom}");
 
             if (!string.IsNullOrEmpty(entity.Email))
             {
@@ -62,6 +81,7 @@ namespace EMR.Server.Services
                     Use = ContactPoint.ContactPointUse.Home
                 });
             }
+            _logger.LogDebug($"{nameof(patient.Telecom)}: {patient.Telecom}");
 
             if (!string.IsNullOrEmpty(entity.Address))
             {
@@ -72,6 +92,7 @@ namespace EMR.Server.Services
                     Type = Address.AddressType.Physical
                 });
             }
+            _logger.LogDebug($"{nameof(patient.Address)}: {patient.Address}");
 
             return patient;
         }

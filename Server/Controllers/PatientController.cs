@@ -14,12 +14,14 @@ namespace EMR.Server.Controllers
         private readonly EMRDbContext _context;
         private readonly IFhirService _fhirService;
         private readonly FhirJsonSerializer _jsonSerializer;
+        private readonly ILogger<PatientController> _logger;
 
-        public PatientController(EMRDbContext context, IFhirService fhirService)
+        public PatientController(EMRDbContext context, IFhirService fhirService, ILogger<PatientController> logger)
         {
             _context = context;
             _fhirService = fhirService;
             _jsonSerializer = new FhirJsonSerializer();
+            _logger = logger
         }
 
         // GET: fhir/Patient
@@ -72,6 +74,7 @@ namespace EMR.Server.Controllers
         {
             try
             {
+                _logger.LogDebug("In PATIENT CONTROLLER -------------------------------------------------------");
                 var parser = new FhirJsonParser();
                 var patient = parser.Parse<Patient>(patientJson);
                 

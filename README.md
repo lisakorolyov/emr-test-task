@@ -39,7 +39,7 @@ A simplified Electronic Medical Records (EMR) system built with .NET Core backen
 
 2. **Run with Docker Compose**
    ```bash
-   docker-compose up -d
+   docker-compose up
    ```
 
 3. **Access the application**
