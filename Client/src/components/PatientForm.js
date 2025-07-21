@@ -49,6 +49,7 @@ const PatientForm = ({ patient, onSave, onCancel }) => {
 
     try {
         console.log("PATIENT FORM---------------------------------------------------");
+        console.debug(formData);
       const fhirPatient = createFhirPatient(formData);
       
       if (patient) {

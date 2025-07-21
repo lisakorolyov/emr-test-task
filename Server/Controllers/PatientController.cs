@@ -21,7 +21,7 @@ namespace EMR.Server.Controllers
             _context = context;
             _fhirService = fhirService;
             _jsonSerializer = new FhirJsonSerializer();
-            _logger = logger
+            _logger = logger;
         }
 
         // GET: fhir/Patient
