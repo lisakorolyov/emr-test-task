@@ -23,25 +23,9 @@ const PatientForm = ({ patient, onSave, onCancel }) => {
       const email = patient.telecom?.find(t => t.system === 'email')?.value || '';
       const addressData = patient.address?.[0];
       
-      // Convert our separate line1/line2 fields back to FHIR format for AddressInput
-      let address = null;
-      if (addressData) {
-        address = {
-          use: addressData.use,
-          type: addressData.type,
-          text: addressData.text,
-          // Convert separate line1/line2 back to line array for AddressInput component
-          line: [
-            addressData.line1 || '',
-            addressData.line2 || ''
-          ].filter(line => line.trim() !== ''), // Remove empty lines
-          city: addressData.city,
-          district: addressData.district,
-          state: addressData.state,
-          postalCode: addressData.postalCode,
-          country: addressData.country,
-        };
-      }
+      // Address data is already in proper FHIR format with line array
+      // Our backend ensures line[0] = AddressLine1 and line[1] = AddressLine2
+      const address = addressData || null;
 
       setFormData({
         givenName: name.given?.[0] || '',

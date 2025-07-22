@@ -114,11 +114,17 @@ namespace EMR.Server.Services
                 if (!string.IsNullOrEmpty(entity.AddressText))
                     address.Text = entity.AddressText;
                 
-                // Set line1 and line2 as separate custom properties (not FHIR line array)
+                // Since FHIR Address doesn't have Line1/Line2 properties, we'll use the Line array
+                // but treat it as two separate fields by always ensuring exactly 2 slots
+                var lines = new List<string> { string.Empty, string.Empty };
                 if (!string.IsNullOrEmpty(entity.AddressLine1))
-                    address["line1"] = entity.AddressLine1;
+                    lines[0] = entity.AddressLine1;
                 if (!string.IsNullOrEmpty(entity.AddressLine2))
-                    address["line2"] = entity.AddressLine2;
+                    lines[1] = entity.AddressLine2;
+                
+                // Only set Line if we have actual data
+                if (!string.IsNullOrEmpty(entity.AddressLine1) || !string.IsNullOrEmpty(entity.AddressLine2))
+                    address.Line = lines;
                 
                 if (!string.IsNullOrEmpty(entity.AddressCity))
                     address.City = entity.AddressCity;
@@ -188,12 +194,18 @@ namespace EMR.Server.Services
                 entity.AddressPostalCode = address.PostalCode ?? string.Empty;
                 entity.AddressCountry = address.Country ?? string.Empty;
                 
-                // Extract line1 and line2 from custom properties sent by frontend
-                // Frontend sends these as separate properties instead of using FHIR line array
-                if (address.TryGetValue("line1", out var line1Value))
-                    entity.AddressLine1 = line1Value?.ToString() ?? string.Empty;
-                if (address.TryGetValue("line2", out var line2Value))
-                    entity.AddressLine2 = line2Value?.ToString() ?? string.Empty;
+                // Extract line1 and line2 from Line array but treat as separate fields
+                // We always store exactly 2 lines: Line[0] = AddressLine1, Line[1] = AddressLine2
+                if (address.Line != null && address.Line.Count > 0)
+                {
+                    entity.AddressLine1 = address.Line.ElementAtOrDefault(0) ?? string.Empty;
+                    entity.AddressLine2 = address.Line.ElementAtOrDefault(1) ?? string.Empty;
+                }
+                else
+                {
+                    entity.AddressLine1 = string.Empty;
+                    entity.AddressLine2 = string.Empty;
+                }
             }
 
             return entity;
