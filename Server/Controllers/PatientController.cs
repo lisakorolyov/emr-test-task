@@ -4,6 +4,7 @@ using EMR.Server.Models;
 using EMR.Server.Services;
 using Hl7.Fhir.Model;
 using Hl7.Fhir.Serialization;
+using System.Text.Json;
 
 namespace EMR.Server.Controllers
 {
@@ -70,11 +71,12 @@ namespace EMR.Server.Controllers
 
         // POST: fhir/Patient
         [HttpPost]
-        public async Task<ActionResult<string>> CreatePatient([FromBody] string patientJson)
+        public async Task<ActionResult<string>> CreatePatient([FromBody] JsonElement patientJsonElement)
         {
             try
             {
                 _logger.LogDebug("In PATIENT CONTROLLER -------------------------------------------------------");
+                var patientJson = patientJsonElement.GetRawText();
                 var parser = new FhirJsonParser();
                 var patient = parser.Parse<Patient>(patientJson);
                 
@@ -99,7 +101,7 @@ namespace EMR.Server.Controllers
 
         // PUT: fhir/Patient/{id}
         [HttpPut("{id}")]
-        public async Task<ActionResult<string>> UpdatePatient(string id, [FromBody] string patientJson)
+        public async Task<ActionResult<string>> UpdatePatient(string id, [FromBody] JsonElement patientJsonElement)
         {
             try
             {
@@ -109,6 +111,7 @@ namespace EMR.Server.Controllers
                     return NotFound();
                 }
 
+                var patientJson = patientJsonElement.GetRawText();
                 var parser = new FhirJsonParser();
                 var patient = parser.Parse<Patient>(patientJson);
                 patient.Id = id; // Ensure the ID matches
