@@ -111,7 +111,11 @@ namespace EMR.Server.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("AddressLine")
+                    b.Property<string>("AddressLine1")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("AddressLine2")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 

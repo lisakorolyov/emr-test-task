@@ -84,9 +84,9 @@ namespace EMR.Server.Services
             _logger.LogDebug($"{nameof(patient.Telecom)}: {patient.Telecom}");
 
             // Create address from structured fields
-            if (!string.IsNullOrEmpty(entity.AddressLine) || !string.IsNullOrEmpty(entity.AddressCity) || 
-                !string.IsNullOrEmpty(entity.AddressState) || !string.IsNullOrEmpty(entity.AddressPostalCode) ||
-                !string.IsNullOrEmpty(entity.AddressText))
+            if (!string.IsNullOrEmpty(entity.AddressLine1) || !string.IsNullOrEmpty(entity.AddressLine2) || 
+                !string.IsNullOrEmpty(entity.AddressCity) || !string.IsNullOrEmpty(entity.AddressState) || 
+                !string.IsNullOrEmpty(entity.AddressPostalCode) || !string.IsNullOrEmpty(entity.AddressText))
             {
                 var address = new Address();
                 
@@ -114,8 +114,14 @@ namespace EMR.Server.Services
                 if (!string.IsNullOrEmpty(entity.AddressText))
                     address.Text = entity.AddressText;
                 
-                if (!string.IsNullOrEmpty(entity.AddressLine))
-                    address.Line = new List<string> { entity.AddressLine };
+                // Handle address lines - FHIR supports multiple lines as an array
+                var addressLines = new List<string>();
+                if (!string.IsNullOrEmpty(entity.AddressLine1))
+                    addressLines.Add(entity.AddressLine1);
+                if (!string.IsNullOrEmpty(entity.AddressLine2))
+                    addressLines.Add(entity.AddressLine2);
+                if (addressLines.Count > 0)
+                    address.Line = addressLines;
                 
                 if (!string.IsNullOrEmpty(entity.AddressCity))
                     address.City = entity.AddressCity;
@@ -179,7 +185,14 @@ namespace EMR.Server.Services
                 entity.AddressUse = address.Use?.ToString() ?? string.Empty;
                 entity.AddressType = address.Type?.ToString() ?? string.Empty;
                 entity.AddressText = address.Text ?? string.Empty;
-                entity.AddressLine = address.Line?.FirstOrDefault() ?? string.Empty;
+                
+                // Handle multiple address lines - extract first two lines
+                if (address.Line != null && address.Line.Count > 0)
+                {
+                    entity.AddressLine1 = address.Line.ElementAtOrDefault(0) ?? string.Empty;
+                    entity.AddressLine2 = address.Line.ElementAtOrDefault(1) ?? string.Empty;
+                }
+                
                 entity.AddressCity = address.City ?? string.Empty;
                 entity.AddressDistrict = address.District ?? string.Empty;
                 entity.AddressState = address.State ?? string.Empty;

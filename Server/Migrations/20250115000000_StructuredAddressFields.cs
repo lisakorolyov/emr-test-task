@@ -33,7 +33,14 @@ namespace EMR.Server.Migrations
                 defaultValue: "");
 
             migrationBuilder.AddColumn<string>(
-                name: "AddressLine",
+                name: "AddressLine1",
+                table: "Patients",
+                type: "nvarchar(max)",
+                nullable: false,
+                defaultValue: "");
+
+            migrationBuilder.AddColumn<string>(
+                name: "AddressLine2",
                 table: "Patients",
                 type: "nvarchar(max)",
                 nullable: false,
@@ -119,7 +126,11 @@ namespace EMR.Server.Migrations
                 table: "Patients");
 
             migrationBuilder.DropColumn(
-                name: "AddressLine",
+                name: "AddressLine1",
+                table: "Patients");
+
+            migrationBuilder.DropColumn(
+                name: "AddressLine2",
                 table: "Patients");
 
             migrationBuilder.DropColumn(

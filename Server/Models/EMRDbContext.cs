@@ -72,7 +72,8 @@ namespace EMR.Server.Models
         public string AddressUse { get; set; } = string.Empty;        // home | work | temp | old | billing
         public string AddressType { get; set; } = string.Empty;       // postal | physical | both
         public string AddressText { get; set; } = string.Empty;       // complete address as text
-        public string AddressLine { get; set; } = string.Empty;       // street address (first line)
+        public string AddressLine1 { get; set; } = string.Empty;      // street address line 1
+        public string AddressLine2 { get; set; } = string.Empty;      // street address line 2 (apt, suite, etc.)
         public string AddressCity { get; set; } = string.Empty;       // city
         public string AddressDistrict { get; set; } = string.Empty;   // district/county
         public string AddressState { get; set; } = string.Empty;      // state/region
