@@ -143,8 +143,8 @@ export const createFhirPatient = (formData) => ({
   address: formData.address ? [
     {
       use: 'home',
-      text: formData.address,
       type: 'physical',
+      ...formData.address,
     },
   ] : [],
 });

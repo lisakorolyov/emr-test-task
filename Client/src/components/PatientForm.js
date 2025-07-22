@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { AddressInput } from '@medplum/react';
 import { patientApi, createFhirPatient } from '../services/fhirApi';
 
 const PatientForm = ({ patient, onSave, onCancel }) => {
@@ -9,7 +10,7 @@ const PatientForm = ({ patient, onSave, onCancel }) => {
     birthDate: '',
     phone: '',
     email: '',
-    address: '',
+    address: null,
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -20,7 +21,7 @@ const PatientForm = ({ patient, onSave, onCancel }) => {
       const name = patient.name?.[0] || {};
       const phone = patient.telecom?.find(t => t.system === 'phone')?.value || '';
       const email = patient.telecom?.find(t => t.system === 'email')?.value || '';
-      const address = patient.address?.[0]?.text || '';
+      const address = patient.address?.[0] || null;
 
       setFormData({
         givenName: name.given?.[0] || '',
@@ -189,14 +190,11 @@ const PatientForm = ({ patient, onSave, onCancel }) => {
         </div>
 
         <div className="mb-3">
-          <label htmlFor="address" className="form-label">Address</label>
-          <textarea
-            className="form-control"
-            id="address"
+          <label className="form-label">Address</label>
+          <AddressInput
             name="address"
-            rows="3"
             value={formData.address}
-            onChange={handleChange}
+            onChange={(value) => setFormData(prev => ({ ...prev, address: value }))}
             disabled={loading}
           />
         </div>
