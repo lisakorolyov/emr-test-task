@@ -145,11 +145,7 @@ export const createFhirPatient = (formData) => ({
       use: formData.address.use || 'home',
       type: formData.address.type || 'physical',
       text: formData.address.text || '',
-      // Use standard FHIR line array but ensure exactly 2 elements for our separate fields
-      line: [
-        formData.address.line?.[0] || '',  // AddressLine1
-        formData.address.line?.[1] || ''   // AddressLine2
-      ],
+      line: formData.address.line || [],  // Standard FHIR line array
       city: formData.address.city || '',
       district: formData.address.district || '',
       state: formData.address.state || '',

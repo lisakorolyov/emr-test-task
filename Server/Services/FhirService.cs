@@ -84,9 +84,9 @@ namespace EMR.Server.Services
             _logger.LogDebug($"{nameof(patient.Telecom)}: {patient.Telecom}");
 
             // Create address from structured fields
-            if (!string.IsNullOrEmpty(entity.AddressLine1) || !string.IsNullOrEmpty(entity.AddressLine2) || 
-                !string.IsNullOrEmpty(entity.AddressCity) || !string.IsNullOrEmpty(entity.AddressState) || 
-                !string.IsNullOrEmpty(entity.AddressPostalCode) || !string.IsNullOrEmpty(entity.AddressText))
+            if (!string.IsNullOrEmpty(entity.AddressLines) || !string.IsNullOrEmpty(entity.AddressCity) || 
+                !string.IsNullOrEmpty(entity.AddressState) || !string.IsNullOrEmpty(entity.AddressPostalCode) ||
+                !string.IsNullOrEmpty(entity.AddressText))
             {
                 var address = new Address();
                 
@@ -110,21 +110,26 @@ namespace EMR.Server.Services
                     address.Type = Address.AddressType.Physical;
                 }
                 
-                // Set structured fields - treat each field separately like city/state
+                // Set structured fields following FHIR specification
                 if (!string.IsNullOrEmpty(entity.AddressText))
                     address.Text = entity.AddressText;
                 
-                // Since FHIR Address doesn't have Line1/Line2 properties, we'll use the Line array
-                // but treat it as two separate fields by always ensuring exactly 2 slots
-                var lines = new List<string> { string.Empty, string.Empty };
-                if (!string.IsNullOrEmpty(entity.AddressLine1))
-                    lines[0] = entity.AddressLine1;
-                if (!string.IsNullOrEmpty(entity.AddressLine2))
-                    lines[1] = entity.AddressLine2;
-                
-                // Only set Line if we have actual data
-                if (!string.IsNullOrEmpty(entity.AddressLine1) || !string.IsNullOrEmpty(entity.AddressLine2))
-                    address.Line = lines;
+                // Handle address lines as proper FHIR array
+                if (!string.IsNullOrEmpty(entity.AddressLines))
+                {
+                    try
+                    {
+                        var lines = System.Text.Json.JsonSerializer.Deserialize<List<string>>(entity.AddressLines);
+                        if (lines != null && lines.Any(line => !string.IsNullOrEmpty(line)))
+                        {
+                            address.Line = lines;
+                        }
+                    }
+                    catch (System.Text.Json.JsonException ex)
+                    {
+                        _logger.LogWarning($"Failed to deserialize address lines: {ex.Message}");
+                    }
+                }
                 
                 if (!string.IsNullOrEmpty(entity.AddressCity))
                     address.City = entity.AddressCity;
@@ -194,17 +199,14 @@ namespace EMR.Server.Services
                 entity.AddressPostalCode = address.PostalCode ?? string.Empty;
                 entity.AddressCountry = address.Country ?? string.Empty;
                 
-                // Extract line1 and line2 from Line array but treat as separate fields
-                // We always store exactly 2 lines: Line[0] = AddressLine1, Line[1] = AddressLine2
+                // Store address lines as JSON array following FHIR specification
                 if (address.Line != null && address.Line.Count > 0)
                 {
-                    entity.AddressLine1 = address.Line.ElementAtOrDefault(0) ?? string.Empty;
-                    entity.AddressLine2 = address.Line.ElementAtOrDefault(1) ?? string.Empty;
+                    entity.AddressLines = System.Text.Json.JsonSerializer.Serialize(address.Line.ToList());
                 }
                 else
                 {
-                    entity.AddressLine1 = string.Empty;
-                    entity.AddressLine2 = string.Empty;
+                    entity.AddressLines = string.Empty;
                 }
             }
 
