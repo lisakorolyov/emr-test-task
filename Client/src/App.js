@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { MantineProvider } from '@mantine/core';
 import PatientList from './components/PatientList';
 import PatientForm from './components/PatientForm';
 import AppointmentList from './components/AppointmentList';
@@ -100,41 +101,43 @@ function App() {
   };
 
   return (
-    <div className="container-fluid">
-      <nav className="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
-        <div className="container">
-          <span className="navbar-brand">EMR System</span>
-          <div className="navbar-nav">
-            <button
-              className={`nav-link btn btn-link ${activeTab === 'patients' ? 'active' : ''}`}
-              onClick={() => setActiveTab('patients')}
-            >
-              Patients
-            </button>
-            <button
-              className={`nav-link btn btn-link ${activeTab === 'appointments' ? 'active' : ''}`}
-              onClick={() => setActiveTab('appointments')}
-            >
-              Appointments
-            </button>
-            <button
-              className={`nav-link btn btn-link ${activeTab === 'encounters' ? 'active' : ''}`}
-              onClick={() => setActiveTab('encounters')}
-            >
-              Encounters
-            </button>
+    <MantineProvider>
+      <div className="container-fluid">
+        <nav className="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
+          <div className="container">
+            <span className="navbar-brand">EMR System</span>
+            <div className="navbar-nav">
+              <button
+                className={`nav-link btn btn-link ${activeTab === 'patients' ? 'active' : ''}`}
+                onClick={() => setActiveTab('patients')}
+              >
+                Patients
+              </button>
+              <button
+                className={`nav-link btn btn-link ${activeTab === 'appointments' ? 'active' : ''}`}
+                onClick={() => setActiveTab('appointments')}
+              >
+                Appointments
+              </button>
+              <button
+                className={`nav-link btn btn-link ${activeTab === 'encounters' ? 'active' : ''}`}
+                onClick={() => setActiveTab('encounters')}
+              >
+                Encounters
+              </button>
+            </div>
           </div>
-        </div>
-      </nav>
+        </nav>
 
-      <div className="container">
-        <div className="row">
-          <div className="col-12">
-            {renderContent()}
+        <div className="container">
+          <div className="row">
+            <div className="col-12">
+              {renderContent()}
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </MantineProvider>
   );
 }
 

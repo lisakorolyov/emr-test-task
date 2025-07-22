@@ -9,6 +9,9 @@
     "eject": "react-scripts eject"
   },
   "dependencies": {
+    "@mantine/core": "^7.17.8",
+    "@mantine/hooks": "^7.17.8",
+    "@mantine/notifications": "^7.17.8",
     "@medplum/core": "^4.3.4",
     "@medplum/react": "^4.3.4",
     "bootstrap": "^5.3.3",
