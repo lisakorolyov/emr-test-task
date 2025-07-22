@@ -1,5 +1,8 @@
 using Hl7.Fhir.Model;
 using EMR.Server.Models;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text.Json;
 
 namespace EMR.Server.Services
 {
@@ -24,7 +27,7 @@ namespace EMR.Server.Services
 
         public Patient EntityToPatient(PatientEntity entity)
         {
-            _logger.LogDebug($"{nameof(entity.Address)}: {entity.Address}\n" +
+            _logger.LogDebug($"{nameof(entity.AddressLines)}: {entity.AddressLines}\n" +
                 $"{nameof(entity.BirthDate)}: {entity.BirthDate}\n" +
                 $"{nameof(entity.Email)}: {entity.Email}\n" +
                 $"{nameof(entity.FamilyName)}: {entity.FamilyName}\n" +
@@ -119,13 +122,13 @@ namespace EMR.Server.Services
                 {
                     try
                     {
-                        var lines = System.Text.Json.JsonSerializer.Deserialize<List<string>>(entity.AddressLines);
+                        var lines = JsonSerializer.Deserialize<List<string>>(entity.AddressLines);
                         if (lines != null && lines.Any(line => !string.IsNullOrEmpty(line)))
                         {
                             address.Line = lines;
                         }
                     }
-                    catch (System.Text.Json.JsonException ex)
+                    catch (JsonException ex)
                     {
                         _logger.LogWarning($"Failed to deserialize address lines: {ex.Message}");
                     }
@@ -202,7 +205,7 @@ namespace EMR.Server.Services
                 // Store address lines as JSON array following FHIR specification
                 if (address.Line != null && address.Line.Count > 0)
                 {
-                    entity.AddressLines = System.Text.Json.JsonSerializer.Serialize(address.Line.ToList());
+                    entity.AddressLines = JsonSerializer.Serialize(address.Line.Where(line => !string.IsNullOrEmpty(line)).ToList());
                 }
                 else
                 {
