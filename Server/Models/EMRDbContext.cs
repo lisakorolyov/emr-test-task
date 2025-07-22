@@ -67,7 +67,18 @@ namespace EMR.Server.Models
         public string Gender { get; set; } = "unknown";
         public string Phone { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;
-        public string Address { get; set; } = string.Empty;
+        
+        // Structured Address fields
+        public string AddressUse { get; set; } = string.Empty;
+        public string AddressType { get; set; } = string.Empty;
+        public string AddressText { get; set; } = string.Empty;
+        public string AddressLine { get; set; } = string.Empty;
+        public string AddressCity { get; set; } = string.Empty;
+        public string AddressDistrict { get; set; } = string.Empty;
+        public string AddressState { get; set; } = string.Empty;
+        public string AddressPostalCode { get; set; } = string.Empty;
+        public string AddressCountry { get; set; } = string.Empty;
+        
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
 

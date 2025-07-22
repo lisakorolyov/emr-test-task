@@ -83,14 +83,56 @@ namespace EMR.Server.Services
             }
             _logger.LogDebug($"{nameof(patient.Telecom)}: {patient.Telecom}");
 
-            if (!string.IsNullOrEmpty(entity.Address))
+            // Create address from structured fields
+            if (!string.IsNullOrEmpty(entity.AddressLine) || !string.IsNullOrEmpty(entity.AddressCity) || 
+                !string.IsNullOrEmpty(entity.AddressState) || !string.IsNullOrEmpty(entity.AddressPostalCode) ||
+                !string.IsNullOrEmpty(entity.AddressText))
             {
-                patient.Address.Add(new Address
+                var address = new Address();
+                
+                // Set use
+                if (!string.IsNullOrEmpty(entity.AddressUse) && Enum.TryParse<Address.AddressUse>(entity.AddressUse, true, out var use))
                 {
-                    Use = Address.AddressUse.Home,
-                    Text = entity.Address,
-                    Type = Address.AddressType.Physical
-                });
+                    address.Use = use;
+                }
+                else
+                {
+                    address.Use = Address.AddressUse.Home;
+                }
+                
+                // Set type
+                if (!string.IsNullOrEmpty(entity.AddressType) && Enum.TryParse<Address.AddressType>(entity.AddressType, true, out var type))
+                {
+                    address.Type = type;
+                }
+                else
+                {
+                    address.Type = Address.AddressType.Physical;
+                }
+                
+                // Set structured fields
+                if (!string.IsNullOrEmpty(entity.AddressText))
+                    address.Text = entity.AddressText;
+                
+                if (!string.IsNullOrEmpty(entity.AddressLine))
+                    address.Line = new List<string> { entity.AddressLine };
+                
+                if (!string.IsNullOrEmpty(entity.AddressCity))
+                    address.City = entity.AddressCity;
+                
+                if (!string.IsNullOrEmpty(entity.AddressDistrict))
+                    address.District = entity.AddressDistrict;
+                
+                if (!string.IsNullOrEmpty(entity.AddressState))
+                    address.State = entity.AddressState;
+                
+                if (!string.IsNullOrEmpty(entity.AddressPostalCode))
+                    address.PostalCode = entity.AddressPostalCode;
+                
+                if (!string.IsNullOrEmpty(entity.AddressCountry))
+                    address.Country = entity.AddressCountry;
+                
+                patient.Address.Add(address);
             }
             _logger.LogDebug($"{nameof(patient.Address)}: {patient.Address}");
 
@@ -134,7 +176,15 @@ namespace EMR.Server.Services
             var address = patient.Address?.FirstOrDefault();
             if (address != null)
             {
-                entity.Address = address.Text ?? string.Empty;
+                entity.AddressUse = address.Use?.ToString() ?? string.Empty;
+                entity.AddressType = address.Type?.ToString() ?? string.Empty;
+                entity.AddressText = address.Text ?? string.Empty;
+                entity.AddressLine = address.Line?.FirstOrDefault() ?? string.Empty;
+                entity.AddressCity = address.City ?? string.Empty;
+                entity.AddressDistrict = address.District ?? string.Empty;
+                entity.AddressState = address.State ?? string.Empty;
+                entity.AddressPostalCode = address.PostalCode ?? string.Empty;
+                entity.AddressCountry = address.Country ?? string.Empty;
             }
 
             return entity;
