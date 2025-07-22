@@ -4,6 +4,7 @@ using EMR.Server.Models;
 using EMR.Server.Services;
 using Hl7.Fhir.Model;
 using Hl7.Fhir.Serialization;
+using System.Text.Json;
 
 namespace EMR.Server.Controllers
 {
@@ -73,10 +74,11 @@ namespace EMR.Server.Controllers
 
         // POST: fhir/Encounter
         [HttpPost]
-        public async Task<ActionResult<string>> CreateEncounter([FromBody] string encounterJson)
+        public async Task<ActionResult<string>> CreateEncounter([FromBody] JsonElement encounterJsonElement)
         {
             try
             {
+                var encounterJson = encounterJsonElement.GetRawText();
                 var parser = new FhirJsonParser();
                 var encounter = parser.Parse<Encounter>(encounterJson);
                 
@@ -108,7 +110,7 @@ namespace EMR.Server.Controllers
 
         // PUT: fhir/Encounter/{id}
         [HttpPut("{id}")]
-        public async Task<ActionResult<string>> UpdateEncounter(string id, [FromBody] string encounterJson)
+        public async Task<ActionResult<string>> UpdateEncounter(string id, [FromBody] JsonElement encounterJsonElement)
         {
             try
             {
@@ -118,6 +120,7 @@ namespace EMR.Server.Controllers
                     return NotFound();
                 }
 
+                var encounterJson = encounterJsonElement.GetRawText();
                 var parser = new FhirJsonParser();
                 var encounter = parser.Parse<Encounter>(encounterJson);
                 encounter.Id = id; // Ensure the ID matches
