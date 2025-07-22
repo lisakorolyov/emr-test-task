@@ -142,9 +142,16 @@ export const createFhirPatient = (formData) => ({
   ],
   address: formData.address ? [
     {
-      use: 'home',
-      type: 'physical',
-      ...formData.address,
+      use: formData.address.use || 'home',
+      type: formData.address.type || 'physical',
+      text: formData.address.text || '',
+      line1: formData.address.line?.[0] || '',
+      line2: formData.address.line?.[1] || '',
+      city: formData.address.city || '',
+      district: formData.address.district || '',
+      state: formData.address.state || '',
+      postalCode: formData.address.postalCode || '',
+      country: formData.address.country || '',
     },
   ] : [],
 });
