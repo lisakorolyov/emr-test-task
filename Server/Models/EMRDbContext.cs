@@ -68,16 +68,16 @@ namespace EMR.Server.Models
         public string Phone { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;
         
-        // Structured Address fields
-        public string AddressUse { get; set; } = string.Empty;
-        public string AddressType { get; set; } = string.Empty;
-        public string AddressText { get; set; } = string.Empty;
-        public string AddressLine { get; set; } = string.Empty;
-        public string AddressCity { get; set; } = string.Empty;
-        public string AddressDistrict { get; set; } = string.Empty;
-        public string AddressState { get; set; } = string.Empty;
-        public string AddressPostalCode { get; set; } = string.Empty;
-        public string AddressCountry { get; set; } = string.Empty;
+        // FHIR Address fields - matching Medplum AddressInput exactly
+        public string AddressUse { get; set; } = string.Empty;        // home | work | temp | old | billing
+        public string AddressType { get; set; } = string.Empty;       // postal | physical | both
+        public string AddressText { get; set; } = string.Empty;       // complete address as text
+        public string AddressLine { get; set; } = string.Empty;       // street address (first line)
+        public string AddressCity { get; set; } = string.Empty;       // city
+        public string AddressDistrict { get; set; } = string.Empty;   // district/county
+        public string AddressState { get; set; } = string.Empty;      // state/region
+        public string AddressPostalCode { get; set; } = string.Empty; // postal/zip code
+        public string AddressCountry { get; set; } = string.Empty;    // country
         
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
