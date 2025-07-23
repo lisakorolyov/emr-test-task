@@ -1,7 +1,7 @@
 // Use different API URLs based on environment
 const API_BASE_URL = process.env.NODE_ENV === 'production' 
-  ? 'http://localhost:5000/fhir'  // For Docker environment
-  : 'http://localhost:5000/fhir'; // For development
+  ? 'http://localhost:5186/fhir'  // For Docker environment
+  : 'http://localhost:5186/fhir'; // For development
 
 // Helper function to make API requests
 const apiRequest = async (url, options = {}) => {
