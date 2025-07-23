@@ -63,7 +63,15 @@ const PatientForm = ({ patient, onSave, onCancel }) => {
       //  logged = true;
       //}
 
-      setFormData({
+      // Debug logging before setting formData
+      console.log('--- Patient Data Debug ---');
+      console.log('Patient object:', patient);
+      console.log('Patient address array:', patient.address);
+      console.log('First address element:', addressData);
+      console.log('Processed address object:', address);
+      console.log('---------------------------');
+
+      const newFormData = {
         givenName: name.given?.[0] || '',
         familyName: name.family || '',
         gender: patient.gender || 'unknown',
@@ -71,31 +79,38 @@ const PatientForm = ({ patient, onSave, onCancel }) => {
         phone: phone,
         email: email,
         address: address,
-      });
+      };
 
+      setFormData(newFormData);
 
-        console.log('--- Form Data ---');
-        console.log(`Given Name: ${formData.givenName} - ${typeof formData.givenName}`);
-        console.log(`Family Name: ${formData.familyName} - ${typeof formData.familyName}`);
-        console.log(`Gender: ${formData.gender} - ${typeof formData.gender}`);
-        console.log(`Birth Date: ${formData.birthDate} - ${typeof formData.birthDate}`);
-        console.log(`Phone: ${formData.phone} - ${typeof formData.phone}`);
-        console.log(`Email: ${formData.email} - ${typeof formData.email}`);
+      // Debug logging after creating the new form data object
+      console.log('--- New Form Data ---');
+      console.log(`Given Name: ${newFormData.givenName} - ${typeof newFormData.givenName}`);
+      console.log(`Family Name: ${newFormData.familyName} - ${typeof newFormData.familyName}`);
+      console.log(`Gender: ${newFormData.gender} - ${typeof newFormData.gender}`);
+      console.log(`Birth Date: ${newFormData.birthDate} - ${typeof newFormData.birthDate}`);
+      console.log(`Phone: ${newFormData.phone} - ${typeof newFormData.phone}`);
+      console.log(`Email: ${newFormData.email} - ${typeof newFormData.email}`);
 
-        if (formData.address) {
-            console.log('--- Address (formData.address) ---');
-            console.log(`Use: ${formData.address.use} - ${typeof formData.address.use}`);
-            console.log(`Type: ${formData.address.type} - ${typeof formData.address.type}`);
-            console.log(`Text: ${formData.address.text} - ${typeof formData.address.text}`);
-            console.log(`Line 1: ${formData.address.line[0] || ''} - ${typeof formData.address.line[0]}`);
-            console.log(`Line 2: ${formData.address.line[1] || ''} - ${typeof formData.address.line[1]}`);
-            console.log(`City: ${formData.address.city} - ${typeof formData.address.city}`);
-            console.log(`District: ${formData.address.district} - ${typeof formData.address.district}`);
-            console.log(`State: ${formData.address.state} - ${typeof formData.address.state}`);
-            console.log(`Postal Code: ${formData.address.postalCode} - ${typeof formData.address.postalCode}`);
-            console.log(`Country: ${formData.address.country} - ${typeof formData.address.country}`);
-            console.log('-----------------------------');
-        }
+      if (newFormData.address) {
+          console.log('--- Address (newFormData.address) ---');
+          console.log(`Use: ${newFormData.address.use} - ${typeof newFormData.address.use}`);
+          console.log(`Type: ${newFormData.address.type} - ${typeof newFormData.address.type}`);
+          console.log(`Text: ${newFormData.address.text} - ${typeof newFormData.address.text}`);
+          console.log(`Line 1: ${newFormData.address.line[0] || ''} - ${typeof newFormData.address.line[0]}`);
+          console.log(`Line 2: ${newFormData.address.line[1] || ''} - ${typeof newFormData.address.line[1]}`);
+          console.log(`City: ${newFormData.address.city} - ${typeof newFormData.address.city}`);
+          console.log(`District: ${newFormData.address.district} - ${typeof newFormData.address.district}`);
+          console.log(`State: ${newFormData.address.state} - ${typeof newFormData.address.state}`);
+          console.log(`Postal Code: ${newFormData.address.postalCode} - ${typeof newFormData.address.postalCode}`);
+          console.log(`Country: ${newFormData.address.country} - ${typeof newFormData.address.country}`);
+          console.log('-----------------------------');
+      } else {
+          console.log('--- Address is null/undefined ---');
+          console.log('addressData was:', addressData);
+          console.log('address was:', address);
+          console.log('----------------------------------');
+      }
 
 
 
