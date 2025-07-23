@@ -38,6 +38,31 @@ const PatientForm = ({ patient, onSave, onCancel }) => {
         country: addressData.country || '',
       } : undefined;
 
+      //let logged = false;
+      //if (!logged) {
+      //  console.log('--- Patient Info ---');
+      //  console.log(`Given Name: ${name.given} - ${typeof name.given}`);
+      //  console.log(`Family Name: ${name.family} - ${typeof name.family}`);
+      //  console.log(`Phone: ${phone} - ${typeof phone}`);
+      //  console.log(`Phone: ${phone} - ${typeof phone}`);
+      //  console.log(`Email: ${email} - ${typeof email}`);
+
+      //  console.log('--- Address Info ---');
+      //  console.log(`Use: ${address.use} - ${typeof address.use}`);
+      //  console.log(`Type: ${address.type} - ${typeof address.type}`);
+      //  console.log(`Text: ${address.text} - ${typeof address.text}`);
+      //  console.log(`Line 1: ${address.line[0] || ''} - ${typeof address.line[0]}`);
+      //  console.log(`Line 2: ${address.line[1] || ''} - ${typeof address.line[1]}`);
+      //  console.log(`City: ${address.city} - ${typeof address.city}`);
+      //  console.log(`District: ${address.district} - ${typeof address.district}`);
+      //  console.log(`State: ${address.state} - ${typeof address.state}`);
+      //  console.log(`Postal Code: ${address.postalCode} - ${typeof address.postalCode}`);
+      //  console.log(`Country: ${address.country} - ${typeof address.country}`);
+      //  console.log('--------------------');
+
+      //  logged = true;
+      //}
+
       setFormData({
         givenName: name.given?.[0] || '',
         familyName: name.family || '',
@@ -47,6 +72,34 @@ const PatientForm = ({ patient, onSave, onCancel }) => {
         email: email,
         address: address,
       });
+
+
+        console.log('--- Form Data ---');
+        console.log(`Given Name: ${formData.givenName} - ${typeof formData.givenName}`);
+        console.log(`Family Name: ${formData.familyName} - ${typeof formData.familyName}`);
+        console.log(`Gender: ${formData.gender} - ${typeof formData.gender}`);
+        console.log(`Birth Date: ${formData.birthDate} - ${typeof formData.birthDate}`);
+        console.log(`Phone: ${formData.phone} - ${typeof formData.phone}`);
+        console.log(`Email: ${formData.email} - ${typeof formData.email}`);
+
+        if (formData.address) {
+            console.log('--- Address (formData.address) ---');
+            console.log(`Use: ${formData.address.use} - ${typeof formData.address.use}`);
+            console.log(`Type: ${formData.address.type} - ${typeof formData.address.type}`);
+            console.log(`Text: ${formData.address.text} - ${typeof formData.address.text}`);
+            console.log(`Line 1: ${formData.address.line[0] || ''} - ${typeof formData.address.line[0]}`);
+            console.log(`Line 2: ${formData.address.line[1] || ''} - ${typeof formData.address.line[1]}`);
+            console.log(`City: ${formData.address.city} - ${typeof formData.address.city}`);
+            console.log(`District: ${formData.address.district} - ${typeof formData.address.district}`);
+            console.log(`State: ${formData.address.state} - ${typeof formData.address.state}`);
+            console.log(`Postal Code: ${formData.address.postalCode} - ${typeof formData.address.postalCode}`);
+            console.log(`Country: ${formData.address.country} - ${typeof formData.address.country}`);
+            console.log('-----------------------------');
+        }
+
+
+
+
     }
   }, [patient]);
 
