@@ -203,7 +203,7 @@ namespace EMR.Server.Services
                 entity.AddressCountry = address.Country ?? string.Empty;
                 
                 // Store address lines as JSON array following FHIR specification
-                if (address.Line != null && address.Line.Count > 0)
+                if (address.Line != null && address.Line.Count() > 0)
                 {
                     entity.AddressLines = JsonSerializer.Serialize(address.Line.Where(line => !string.IsNullOrEmpty(line)).ToList());
                 }
