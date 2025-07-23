@@ -1,7 +1,7 @@
 // Use different API URLs based on environment
 const API_BASE_URL = process.env.NODE_ENV === 'production' 
-  ? 'http://localhost:5000/fhir'  // For Docker environment
-  : 'http://localhost:5000/fhir'; // For development
+  ? 'http://localhost:5186/fhir'  // For Docker environment
+  : 'http://localhost:5186/fhir'; // For development
 
 // Helper function to make API requests
 const apiRequest = async (url, options = {}) => {
@@ -142,9 +142,15 @@ export const createFhirPatient = (formData) => ({
   ],
   address: formData.address ? [
     {
-      use: 'home',
-      text: formData.address,
-      type: 'physical',
+      use: formData.address.use || 'home',
+      type: formData.address.type || 'physical',
+      text: formData.address.text || '',
+      line: formData.address.line || [],  // Standard FHIR line array
+      city: formData.address.city || '',
+      district: formData.address.district || '',
+      state: formData.address.state || '',
+      postalCode: formData.address.postalCode || '',
+      country: formData.address.country || '',
     },
   ] : [],
 });

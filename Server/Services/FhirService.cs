@@ -1,5 +1,8 @@
 using Hl7.Fhir.Model;
 using EMR.Server.Models;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text.Json;
 
 namespace EMR.Server.Services
 {
@@ -24,7 +27,7 @@ namespace EMR.Server.Services
 
         public Patient EntityToPatient(PatientEntity entity)
         {
-            _logger.LogDebug($"{nameof(entity.Address)}: {entity.Address}\n" +
+            _logger.LogDebug($"{nameof(entity.AddressLines)}: {entity.AddressLines}\n" +
                 $"{nameof(entity.BirthDate)}: {entity.BirthDate}\n" +
                 $"{nameof(entity.Email)}: {entity.Email}\n" +
                 $"{nameof(entity.FamilyName)}: {entity.FamilyName}\n" +
@@ -83,14 +86,70 @@ namespace EMR.Server.Services
             }
             _logger.LogDebug($"{nameof(patient.Telecom)}: {patient.Telecom}");
 
-            if (!string.IsNullOrEmpty(entity.Address))
+            // Create address from structured fields
+            if (!string.IsNullOrEmpty(entity.AddressLines) || !string.IsNullOrEmpty(entity.AddressCity) || 
+                !string.IsNullOrEmpty(entity.AddressState) || !string.IsNullOrEmpty(entity.AddressPostalCode) ||
+                !string.IsNullOrEmpty(entity.AddressText))
             {
-                patient.Address.Add(new Address
+                var address = new Address();
+                
+                // Set use
+                if (!string.IsNullOrEmpty(entity.AddressUse) && Enum.TryParse<Address.AddressUse>(entity.AddressUse, true, out var use))
                 {
-                    Use = Address.AddressUse.Home,
-                    Text = entity.Address,
-                    Type = Address.AddressType.Physical
-                });
+                    address.Use = use;
+                }
+                else
+                {
+                    address.Use = Address.AddressUse.Home;
+                }
+                
+                // Set type
+                if (!string.IsNullOrEmpty(entity.AddressType) && Enum.TryParse<Address.AddressType>(entity.AddressType, true, out var type))
+                {
+                    address.Type = type;
+                }
+                else
+                {
+                    address.Type = Address.AddressType.Physical;
+                }
+                
+                // Set structured fields following FHIR specification
+                if (!string.IsNullOrEmpty(entity.AddressText))
+                    address.Text = entity.AddressText;
+                
+                // Handle address lines as proper FHIR array
+                if (!string.IsNullOrEmpty(entity.AddressLines))
+                {
+                    try
+                    {
+                        var lines = JsonSerializer.Deserialize<List<string>>(entity.AddressLines);
+                        if (lines != null && lines.Any(line => !string.IsNullOrEmpty(line)))
+                        {
+                            address.Line = lines;
+                        }
+                    }
+                    catch (JsonException ex)
+                    {
+                        _logger.LogWarning($"Failed to deserialize address lines: {ex.Message}");
+                    }
+                }
+                
+                if (!string.IsNullOrEmpty(entity.AddressCity))
+                    address.City = entity.AddressCity;
+                
+                if (!string.IsNullOrEmpty(entity.AddressDistrict))
+                    address.District = entity.AddressDistrict;
+                
+                if (!string.IsNullOrEmpty(entity.AddressState))
+                    address.State = entity.AddressState;
+                
+                if (!string.IsNullOrEmpty(entity.AddressPostalCode))
+                    address.PostalCode = entity.AddressPostalCode;
+                
+                if (!string.IsNullOrEmpty(entity.AddressCountry))
+                    address.Country = entity.AddressCountry;
+                
+                patient.Address.Add(address);
             }
             _logger.LogDebug($"{nameof(patient.Address)}: {patient.Address}");
 
@@ -134,7 +193,24 @@ namespace EMR.Server.Services
             var address = patient.Address?.FirstOrDefault();
             if (address != null)
             {
-                entity.Address = address.Text ?? string.Empty;
+                entity.AddressUse = address.Use?.ToString() ?? string.Empty;
+                entity.AddressType = address.Type?.ToString() ?? string.Empty;
+                entity.AddressText = address.Text ?? string.Empty;
+                entity.AddressCity = address.City ?? string.Empty;
+                entity.AddressDistrict = address.District ?? string.Empty;
+                entity.AddressState = address.State ?? string.Empty;
+                entity.AddressPostalCode = address.PostalCode ?? string.Empty;
+                entity.AddressCountry = address.Country ?? string.Empty;
+                
+                // Store address lines as JSON array following FHIR specification
+                if (address.Line != null && address.Line.Count() > 0)
+                {
+                    entity.AddressLines = JsonSerializer.Serialize(address.Line.Where(line => !string.IsNullOrEmpty(line)).ToList());
+                }
+                else
+                {
+                    entity.AddressLines = string.Empty;
+                }
             }
 
             return entity;
