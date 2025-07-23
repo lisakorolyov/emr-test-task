@@ -17,15 +17,11 @@ const PatientForm = ({ patient, onSave, onCancel }) => {
 
   useEffect(() => {
     if (patient) {
-      console.log('PatientForm: Full patient data:', patient);
-      
       // Populate form with existing patient data
       const name = patient.name?.[0] || {};
       const phone = patient.telecom?.find(t => t.system === 'phone')?.value || '';
       const email = patient.telecom?.find(t => t.system === 'email')?.value || '';
       const addressData = patient.address?.[0];
-      
-      console.log('PatientForm: Address data extracted:', addressData);
       
       // For AddressInput to work properly, ensure we have a properly structured address object
       // If addressData is null/undefined, pass undefined instead of null
@@ -40,8 +36,6 @@ const PatientForm = ({ patient, onSave, onCancel }) => {
         postalCode: addressData.postalCode || '',
         country: addressData.country || '',
       } : undefined;
-
-      console.log('PatientForm: Final address to set in formData:', address);
 
       setFormData({
         givenName: name.given?.[0] || '',
@@ -211,15 +205,11 @@ const PatientForm = ({ patient, onSave, onCancel }) => {
 
         <div className="mb-3">
           <label className="form-label">Address</label>
-          {console.log('AddressInput props - value:', formData.address)}
           <AddressInput
             key={patient?.id || 'new-patient'}
             name="address"
             value={formData.address}
-            onChange={(value) => {
-              console.log('AddressInput onChange called with:', value);
-              setFormData(prev => ({ ...prev, address: value }));
-            }}
+            onChange={(value) => setFormData(prev => ({ ...prev, address: value }))}
             disabled={loading}
           />
         </div>
