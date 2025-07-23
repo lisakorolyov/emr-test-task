@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { AddressInput } from '@medplum/react';
 import { patientApi, createFhirPatient } from '../services/fhirApi';
+import { formatAddressText } from '../utils/addressFormatter';
 
 const PatientForm = ({ patient, onSave, onCancel }) => {
   const [formData, setFormData] = useState({
@@ -28,7 +29,7 @@ const PatientForm = ({ patient, onSave, onCancel }) => {
       const address = addressData ? {
         use: addressData.use || 'home',
         type: addressData.type || 'physical',
-        text: addressData.text || '',
+        text: addressData.text || formatAddressText(addressData), // Auto-generate if missing
         line: addressData.line || [],
         city: addressData.city || '',
         district: addressData.district || '',
@@ -209,7 +210,14 @@ const PatientForm = ({ patient, onSave, onCancel }) => {
             key={patient?.id || 'new-patient'}
             name="address"
             value={formData.address}
-            onChange={(value) => setFormData(prev => ({ ...prev, address: value }))}
+            onChange={(value) => {
+              // Automatically generate formatted address text
+              const updatedAddress = value ? {
+                ...value,
+                text: formatAddressText(value)
+              } : undefined;
+              setFormData(prev => ({ ...prev, address: updatedAddress }));
+            }}
             disabled={loading}
           />
         </div>
