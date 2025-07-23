@@ -116,50 +116,7 @@ export const encounterApi = {
   searchByPatient: (patientId) => apiRequest(`${API_BASE_URL}/Encounter/search?patient=${patientId}`),
 };
 
-// Helper function to format address text automatically
-const formatAddressText = (address) => {
-  if (!address) return '';
-  
-  const parts = [];
-  
-  // Add street address lines
-  if (address.line && address.line.length > 0) {
-    const streetLines = address.line.filter(line => line && line.trim());
-    if (streetLines.length > 0) {
-      parts.push(streetLines.join(', '));
-    }
-  }
-  
-  // Add city, state/province, postal code in standard format
-  const cityStateParts = [];
-  if (address.city && address.city.trim()) {
-    cityStateParts.push(address.city.trim());
-  }
-  
-  // Add state/province and postal code together (e.g., "ON M5V 3A8" or "CA 90210")
-  const statePostalParts = [];
-  if (address.state && address.state.trim()) {
-    statePostalParts.push(address.state.trim());
-  }
-  if (address.postalCode && address.postalCode.trim()) {
-    statePostalParts.push(address.postalCode.trim());
-  }
-  
-  if (statePostalParts.length > 0) {
-    cityStateParts.push(statePostalParts.join(' '));
-  }
-  
-  if (cityStateParts.length > 0) {
-    parts.push(cityStateParts.join(', '));
-  }
-  
-  // Add country if specified and not empty
-  if (address.country && address.country.trim()) {
-    parts.push(address.country.trim());
-  }
-  
-  return parts.join(', ');
-};
+import { formatAddressText } from '../utils/addressFormatter';
 
 // Helper functions to create FHIR resources
 export const createFhirPatient = (formData) => ({
