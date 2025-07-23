@@ -152,7 +152,7 @@ export const createFhirPatient = (formData) => ({
       postalCode: formData.address.postalCode || '',
       country: formData.address.country || '',
     },
-  ] : [],
+  ] : undefined,
 });
 
 export const createFhirAppointment = (formData) => ({
