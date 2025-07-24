@@ -102,7 +102,7 @@ function App() {
 
   return (
     <MantineProvider>
-      <div className="container-fluid">
+      <div className="container-fluid p-none">
         <nav className="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
           <div className="container">
             <span className="navbar-brand">EMR System</span>

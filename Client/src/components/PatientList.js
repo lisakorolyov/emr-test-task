@@ -120,7 +120,7 @@ const PatientList = ({ onEditPatient, onViewPatient }) => {
               {patients.map((patient) => (
                 <tr key={patient.id}>
                   <td>{getPatientName(patient)}</td>
-                  <td>{patient.gender || 'Unknown'}</td>
+                  <td className="text-capitalize">{patient.gender || 'Unknown'}</td>
                   <td>{formatDate(patient.birthDate)}</td>
                   <td>{getPatientPhone(patient)}</td>
                   <td>{getPatientEmail(patient)}</td>
