@@ -30,7 +30,6 @@ const PatientForm = ({ patient, onSave, onCancel }) => {
 
   useEffect(() => {
     if (patient) {
-      // Populate form with existing patient data
       const name = patient.name?.[0] || {};
       const phone = patient.telecom?.find(t => t.system === 'phone')?.value || '';
       const email = patient.telecom?.find(t => t.system === 'email')?.value || '';
@@ -89,10 +88,8 @@ const PatientForm = ({ patient, onSave, onCancel }) => {
       const fhirPatient = createFhirPatient(formData);
       
       if (patient) {
-        // Update existing patient
         await patientApi.update(patient.id, fhirPatient);
       } else {
-        // Create new patient
         await patientApi.create(fhirPatient);
       }
       
@@ -225,7 +222,7 @@ const PatientForm = ({ patient, onSave, onCancel }) => {
             </div>
           </div>
         </div>
-        { formData.address && 
+        { formData.address && // Do not remove. This fixed the AddressInput fields not populating bug
             <div className="mb-3">
               <label className="form-label">Address</label>
                 <AddressInput
