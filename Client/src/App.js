@@ -107,7 +107,7 @@ function App() {
         <nav className="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
           <div className="navbar-brand d-flex align-items-center ms-3">
             <Logo size={32} />
-            <span className="ms-3">EMR System</span>
+            <span className="ms-3">EMR</span>
           </div>
           <div className="container">
             <div className="navbar-nav d-flex flex-row">
