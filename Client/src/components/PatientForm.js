@@ -17,8 +17,8 @@ const PatientForm = ({ patient, onSave, onCancel }) => {
   const [error, setError] = useState(null);
 
     const defaultAddress = {
-        use: 'home',
-        type: 'physical',
+        use: '',
+        type: '',
         text: '',
         line: [],
         city: '',
@@ -221,8 +221,8 @@ const PatientForm = ({ patient, onSave, onCancel }) => {
               />
             </div>
           </div>
-        </div>
-        { formData.address && // Do not remove. This fixed the AddressInput fields not populating bug
+              </div>
+        { (formData.address || !isEditing) && // Do not remove. This (formData.address null check) fixed the AddressInput fields not populating bug
             <div className="mb-3">
               <label className="form-label">Address</label>
                 <AddressInput
