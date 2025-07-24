@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { MantineProvider } from '@mantine/core';
+import { Logo } from '@medplum/react';
 import PatientList from './components/PatientList';
 import PatientForm from './components/PatientForm';
 import AppointmentList from './components/AppointmentList';
@@ -102,11 +103,14 @@ function App() {
 
   return (
     <MantineProvider>
-      <div className="container-fluid p-none">
-        <nav className="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
-          <div className="container">
-            <span className="navbar-brand">EMR System</span>
-            <div className="navbar-nav">
+      <div className="container-fluid p-0">
+        <nav className="navbar navbar-expand-lg navbar-dark bg-dark mb-4 position-relative">
+          <div className="navbar-brand d-flex align-items-center ms-3">
+            <Logo size={32} />
+            <span className="ms-3">EMR</span>
+          </div>
+          <div className="position-absolute top-50 start-50 translate-middle">
+            <div className="navbar-nav d-flex flex-row gap-3">
               <button
                 className={`nav-link btn btn-link ${activeTab === 'patients' ? 'active' : ''}`}
                 onClick={() => setActiveTab('patients')}
