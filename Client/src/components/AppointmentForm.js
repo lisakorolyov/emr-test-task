@@ -95,13 +95,6 @@ const AppointmentForm = ({ appointment, onSave, onCancel }) => {
     <div>
       <div className="d-flex justify-content-between align-items-center mb-3">
         <h2>{isEditing ? 'Edit Appointment' : 'Schedule New Appointment'}</h2>
-        <button 
-          className="btn btn-secondary" 
-          onClick={onCancel}
-          disabled={loading}
-        >
-          Cancel
-        </button>
       </div>
 
       {error && (

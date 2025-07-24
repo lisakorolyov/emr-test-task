@@ -94,13 +94,6 @@ const EncounterForm = ({ encounter, onSave, onCancel }) => {
     <div>
       <div className="d-flex justify-content-between align-items-center mb-3">
         <h2>{isEditing ? 'Edit Encounter' : 'Create New Encounter'}</h2>
-        <button 
-          className="btn btn-secondary" 
-          onClick={onCancel}
-          disabled={loading}
-        >
-          Cancel
-        </button>
       </div>
 
       {error && (
