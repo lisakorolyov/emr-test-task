@@ -109,7 +109,7 @@ function App() {
             <Logo size={32} />
             <span className="ms-3">EMR</span>
           </div>
-          <div className="container">
+          <div className="container px-0">
             <div className="navbar-nav d-flex flex-row">
               <button
                 className={`nav-link btn btn-link ${activeTab === 'patients' ? 'active' : ''}`}
