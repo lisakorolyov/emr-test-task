@@ -1,8 +1,10 @@
 /* Custom styles for EMR application */
 
-/* EMR title color */
+/* EMR title color and styling */
 .navbar-brand span {
   color: #946af9 !important;
+  font-weight: 700 !important;
+  margin-left: 0.5rem !important;
 }
 
 /* Primary button styles */
