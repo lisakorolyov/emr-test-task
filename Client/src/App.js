@@ -110,7 +110,7 @@ function App() {
             <span className="ms-3">EMR</span>
           </div>
           <div className="position-absolute top-50 start-50 translate-middle">
-            <div className="navbar-nav d-flex flex-row">
+            <div className="navbar-nav d-flex flex-row gap-3">
               <button
                 className={`nav-link btn btn-link ${activeTab === 'patients' ? 'active' : ''}`}
                 onClick={() => setActiveTab('patients')}
