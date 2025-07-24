@@ -103,7 +103,7 @@ function App() {
 
   return (
     <MantineProvider>
-      <div className="container-fluid p-none">
+      <div className="container-fluid p-0">
         <nav className="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
           <div className="container">
             <div className="navbar-brand d-flex align-items-center">
