@@ -7,37 +7,37 @@
 
 /* Primary button styles */
 .btn-primary {
-  background-color: #946af9 !important;
-  border-color: #946af9 !important;
+  background-color: #8355ef !important;
+  border-color: #8355ef !important;
 }
 
 .btn-primary:hover {
-  background-color: #7c5ad6 !important;
-  border-color: #7c5ad6 !important;
+  background-color: #6d42d4 !important;
+  border-color: #6d42d4 !important;
 }
 
 .btn-primary:focus,
 .btn-primary.focus {
-  background-color: #7c5ad6 !important;
-  border-color: #7c5ad6 !important;
-  box-shadow: 0 0 0 0.2rem rgba(148, 106, 249, 0.5) !important;
+  background-color: #6d42d4 !important;
+  border-color: #6d42d4 !important;
+  box-shadow: 0 0 0 0.2rem rgba(131, 85, 239, 0.5) !important;
 }
 
 .btn-primary:active,
 .btn-primary.active,
 .show > .btn-primary.dropdown-toggle {
-  background-color: #6a4bc4 !important;
-  border-color: #6a4bc4 !important;
+  background-color: #5a35ba !important;
+  border-color: #5a35ba !important;
 }
 
 .btn-primary:disabled,
 .btn-primary.disabled {
-  background-color: #946af9 !important;
-  border-color: #946af9 !important;
+  background-color: #8355ef !important;
+  border-color: #8355ef !important;
   opacity: 0.65;
 }
 
 /* Badge primary styles */
 .badge.bg-primary {
-  background-color: #946af9 !important;
+  background-color: #8355ef !important;
 }
