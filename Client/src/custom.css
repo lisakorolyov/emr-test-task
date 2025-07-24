@@ -42,6 +42,38 @@
   background-color: #8355ef !important;
 }
 
+/* Outline primary button styles (like View button) */
+.btn-outline-primary {
+  color: #8355ef !important;
+  border-color: #8355ef !important;
+}
+
+.btn-outline-primary:hover {
+  background-color: #8355ef !important;
+  border-color: #8355ef !important;
+  color: #fff !important;
+}
+
+.btn-outline-primary:focus,
+.btn-outline-primary.focus {
+  box-shadow: 0 0 0 0.2rem rgba(131, 85, 239, 0.5) !important;
+}
+
+.btn-outline-primary:active,
+.btn-outline-primary.active,
+.show > .btn-outline-primary.dropdown-toggle {
+  background-color: #8355ef !important;
+  border-color: #8355ef !important;
+  color: #fff !important;
+}
+
+.btn-outline-primary:disabled,
+.btn-outline-primary.disabled {
+  color: #8355ef !important;
+  border-color: #8355ef !important;
+  opacity: 0.65;
+}
+
 /* Info alert boxes - lighter shade of #946af9 */
 .alert-info {
   background-color: rgba(148, 106, 249, 0.15) !important;
