@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { MantineProvider } from '@mantine/core';
+import { Logo } from '@medplum/react';
 import PatientList from './components/PatientList';
 import PatientForm from './components/PatientForm';
 import AppointmentList from './components/AppointmentList';
@@ -105,7 +106,10 @@ function App() {
       <div className="container-fluid p-none">
         <nav className="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
           <div className="container">
-            <span className="navbar-brand">EMR System</span>
+            <div className="navbar-brand d-flex align-items-center">
+              <Logo size={32} />
+              <span className="ms-3">EMR System</span>
+            </div>
             <div className="navbar-nav">
               <button
                 className={`nav-link btn btn-link ${activeTab === 'patients' ? 'active' : ''}`}
