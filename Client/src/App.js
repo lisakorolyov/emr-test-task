@@ -109,8 +109,8 @@ function App() {
             <Logo size={32} />
             <span className="ms-3">EMR System</span>
           </div>
-          <div className="container d-flex justify-content-center">
-            <div className="navbar-nav">
+          <div className="ms-auto me-3">
+            <div className="navbar-nav d-flex flex-row">
               <button
                 className={`nav-link btn btn-link ${activeTab === 'patients' ? 'active' : ''}`}
                 onClick={() => setActiveTab('patients')}
