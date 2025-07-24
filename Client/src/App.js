@@ -35,12 +35,20 @@ function App() {
     setActiveTab('encounter-form');
   };
 
-  const handleFormCancel = () => {
+  const handlePatientFormCancel = () => {
     setEditingPatient(null);
-    setEditingAppointment(null);
-    setEditingEncounter(null);
     setSelectedPatient(null);
     setActiveTab('patients');
+  };
+
+  const handleAppointmentFormCancel = () => {
+    setEditingAppointment(null);
+    setActiveTab('appointments');
+  };
+
+  const handleEncounterFormCancel = () => {
+    setEditingEncounter(null);
+    setActiveTab('encounters');
   };
 
   const renderContent = () => {
@@ -56,8 +64,8 @@ function App() {
         return (
           <PatientForm
             patient={editingPatient}
-            onCancel={handleFormCancel}
-            onSave={handleFormCancel}
+            onCancel={handlePatientFormCancel}
+            onSave={handlePatientFormCancel}
           />
         );
       case 'appointments':
@@ -70,8 +78,8 @@ function App() {
         return (
           <AppointmentForm
             appointment={editingAppointment}
-            onCancel={handleFormCancel}
-            onSave={handleFormCancel}
+            onCancel={handleAppointmentFormCancel}
+            onSave={handleAppointmentFormCancel}
           />
         );
       case 'encounters':
@@ -84,8 +92,8 @@ function App() {
         return (
           <EncounterForm
             encounter={editingEncounter}
-            onCancel={handleFormCancel}
-            onSave={handleFormCancel}
+            onCancel={handleEncounterFormCancel}
+            onSave={handleEncounterFormCancel}
           />
         );
       case 'patient-encounters':
