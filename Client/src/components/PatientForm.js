@@ -16,6 +16,18 @@ const PatientForm = ({ patient, onSave, onCancel }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
+    const defaultAddress = {
+        use: 'home',
+        type: 'physical',
+        text: '',
+        line: [],
+        city: '',
+        district: '',
+        state: '',
+        postalCode: '',
+        country: ''
+    };
+
   useEffect(() => {
     if (patient) {
       // Populate form with existing patient data
@@ -24,52 +36,14 @@ const PatientForm = ({ patient, onSave, onCancel }) => {
       const email = patient.telecom?.find(t => t.system === 'email')?.value || '';
       const addressData = patient.address?.[0];
       
-      // For AddressInput to work properly, ensure we have a properly structured address object
-      // If addressData is null/undefined, pass undefined instead of null
-      const address = addressData ? {
-        use: addressData.use || 'home',
-        type: addressData.type || 'physical',
-        text: addressData.text || formatAddressText(addressData), // Auto-generate if missing
-        line: addressData.line || [],
-        city: addressData.city || '',
-        district: addressData.district || '',
-        state: addressData.state || '',
-        postalCode: addressData.postalCode || '',
-        country: addressData.country || '',
-      } : undefined;
-
-      //let logged = false;
-      //if (!logged) {
-      //  console.log('--- Patient Info ---');
-      //  console.log(`Given Name: ${name.given} - ${typeof name.given}`);
-      //  console.log(`Family Name: ${name.family} - ${typeof name.family}`);
-      //  console.log(`Phone: ${phone} - ${typeof phone}`);
-      //  console.log(`Phone: ${phone} - ${typeof phone}`);
-      //  console.log(`Email: ${email} - ${typeof email}`);
-
-      //  console.log('--- Address Info ---');
-      //  console.log(`Use: ${address.use} - ${typeof address.use}`);
-      //  console.log(`Type: ${address.type} - ${typeof address.type}`);
-      //  console.log(`Text: ${address.text} - ${typeof address.text}`);
-      //  console.log(`Line 1: ${address.line[0] || ''} - ${typeof address.line[0]}`);
-      //  console.log(`Line 2: ${address.line[1] || ''} - ${typeof address.line[1]}`);
-      //  console.log(`City: ${address.city} - ${typeof address.city}`);
-      //  console.log(`District: ${address.district} - ${typeof address.district}`);
-      //  console.log(`State: ${address.state} - ${typeof address.state}`);
-      //  console.log(`Postal Code: ${address.postalCode} - ${typeof address.postalCode}`);
-      //  console.log(`Country: ${address.country} - ${typeof address.country}`);
-      //  console.log('--------------------');
-
-      //  logged = true;
-      //}
-
-      // Debug logging before setting formData
-      console.log('--- Patient Data Debug ---');
-      console.log('Patient object:', patient);
-      console.log('Patient address array:', patient.address);
-      console.log('First address element:', addressData);
-      console.log('Processed address object:', address);
-      console.log('---------------------------');
+        const address = addressData
+            ? {
+                ...defaultAddress,
+                ...addressData,
+                text: addressData.text || formatAddressText(addressData),
+                line: Array.isArray(addressData.line) ? addressData.line.filter(line => typeof line === 'string') : [],
+            }
+            : { ...defaultAddress };
 
       const newFormData = {
         givenName: name.given?.[0] || '',
@@ -82,39 +56,6 @@ const PatientForm = ({ patient, onSave, onCancel }) => {
       };
 
       setFormData(newFormData);
-
-      // Debug logging after creating the new form data object
-      console.log('--- New Form Data ---');
-      console.log(`Given Name: ${newFormData.givenName} - ${typeof newFormData.givenName}`);
-      console.log(`Family Name: ${newFormData.familyName} - ${typeof newFormData.familyName}`);
-      console.log(`Gender: ${newFormData.gender} - ${typeof newFormData.gender}`);
-      console.log(`Birth Date: ${newFormData.birthDate} - ${typeof newFormData.birthDate}`);
-      console.log(`Phone: ${newFormData.phone} - ${typeof newFormData.phone}`);
-      console.log(`Email: ${newFormData.email} - ${typeof newFormData.email}`);
-
-      if (newFormData.address) {
-          console.log('--- Address (newFormData.address) ---');
-          console.log(`Use: ${newFormData.address.use} - ${typeof newFormData.address.use}`);
-          console.log(`Type: ${newFormData.address.type} - ${typeof newFormData.address.type}`);
-          console.log(`Text: ${newFormData.address.text} - ${typeof newFormData.address.text}`);
-          console.log(`Line 1: ${newFormData.address.line[0] || ''} - ${typeof newFormData.address.line[0]}`);
-          console.log(`Line 2: ${newFormData.address.line[1] || ''} - ${typeof newFormData.address.line[1]}`);
-          console.log(`City: ${newFormData.address.city} - ${typeof newFormData.address.city}`);
-          console.log(`District: ${newFormData.address.district} - ${typeof newFormData.address.district}`);
-          console.log(`State: ${newFormData.address.state} - ${typeof newFormData.address.state}`);
-          console.log(`Postal Code: ${newFormData.address.postalCode} - ${typeof newFormData.address.postalCode}`);
-          console.log(`Country: ${newFormData.address.country} - ${typeof newFormData.address.country}`);
-          console.log('-----------------------------');
-      } else {
-          console.log('--- Address is null/undefined ---');
-          console.log('addressData was:', addressData);
-          console.log('address was:', address);
-          console.log('----------------------------------');
-      }
-
-
-
-
     }
   }, [patient]);
 
@@ -124,7 +65,20 @@ const PatientForm = ({ patient, onSave, onCancel }) => {
       ...prev,
       [name]: value,
     }));
-  };
+    };
+
+    const handleAddressChange = (updated) => {
+        const updatedAddress = {
+            ...formData.address,
+            ...updated,
+            text: formatAddressText({ ...formData.address, ...updated }),
+        };
+        setFormData((prev) => ({
+            ...prev,
+            address: updatedAddress,
+        }));
+    };
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -271,25 +225,19 @@ const PatientForm = ({ patient, onSave, onCancel }) => {
             </div>
           </div>
         </div>
-
-        <div className="mb-3">
-          <label className="form-label">Address</label>
-          <AddressInput
-            key={patient?.id || 'new-patient'}
-            name="address"
-            value={formData.address}
-            onChange={(value) => {
-              // Automatically generate formatted address text
-              const updatedAddress = value ? {
-                ...value,
-                text: formatAddressText(value)
-              } : undefined;
-              setFormData(prev => ({ ...prev, address: updatedAddress }));
-            }}
-            disabled={loading}
-          />
-        </div>
-
+        { formData.address && 
+            <div className="mb-3">
+              <label className="form-label">Address</label>
+                <AddressInput
+                    defaultValue={formData.address}
+                    key={ patient?.id || 'new' }
+                    name="address"
+                    value={formData.address}
+                    onChange={handleAddressChange}
+                    disabled={loading}
+                />
+            </div>
+        }
         <div className="d-grid gap-2 d-md-flex justify-content-md-end">
           <button
             type="button"

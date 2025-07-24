@@ -138,13 +138,13 @@ const AppointmentForm = ({ appointment, onSave, onCancel }) => {
               <input
                 type="datetime-local"
                 className="form-control"
-                id="start"
-                name="start"
+                              id="start"
+                              name="start"
                 value={formData.start}
                 onChange={handleChange}
-                required
-                disabled={loading}
-              />
+                              required
+                              disabled={loading}
+                          />
             </div>
           </div>
           <div className="col-md-6">
