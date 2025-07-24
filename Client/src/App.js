@@ -104,12 +104,12 @@ function App() {
   return (
     <MantineProvider>
       <div className="container-fluid p-0">
-        <nav className="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
+        <nav className="navbar navbar-expand-lg navbar-dark bg-dark mb-4 position-relative">
           <div className="navbar-brand d-flex align-items-center ms-3">
             <Logo size={32} />
             <span className="ms-3">EMR</span>
           </div>
-          <div className="container px-0">
+          <div className="position-absolute top-50 start-50 translate-middle">
             <div className="navbar-nav d-flex flex-row">
               <button
                 className={`nav-link btn btn-link ${activeTab === 'patients' ? 'active' : ''}`}
