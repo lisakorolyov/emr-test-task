@@ -1,0 +1,99 @@
+/* Custom styles for EMR application */
+
+/* EMR title color and styling */
+.navbar-brand span {
+  color: #946af9 !important;
+  font-weight: 700 !important;
+  margin-left: 0.5rem !important;
+}
+
+/* Primary button styles */
+.btn-primary {
+  background-color: #8355ef !important;
+  border-color: #8355ef !important;
+}
+
+.btn-primary:hover {
+  background-color: #6d42d4 !important;
+  border-color: #6d42d4 !important;
+}
+
+.btn-primary:focus,
+.btn-primary.focus {
+  background-color: #6d42d4 !important;
+  border-color: #6d42d4 !important;
+  box-shadow: 0 0 0 0.2rem rgba(131, 85, 239, 0.5) !important;
+}
+
+.btn-primary:active,
+.btn-primary.active,
+.show > .btn-primary.dropdown-toggle {
+  background-color: #5a35ba !important;
+  border-color: #5a35ba !important;
+}
+
+.btn-primary:disabled,
+.btn-primary.disabled {
+  background-color: #8355ef !important;
+  border-color: #8355ef !important;
+  opacity: 0.65;
+}
+
+/* Badge primary styles */
+.badge.bg-primary {
+  background-color: #8355ef !important;
+}
+
+/* Outline primary button styles (like View button) */
+.btn-outline-primary {
+  color: #8355ef !important;
+  border-color: #8355ef !important;
+}
+
+.btn-outline-primary:hover {
+  background-color: #8355ef !important;
+  border-color: #8355ef !important;
+  color: #fff !important;
+}
+
+.btn-outline-primary:focus,
+.btn-outline-primary.focus {
+  box-shadow: 0 0 0 0.2rem rgba(131, 85, 239, 0.5) !important;
+}
+
+.btn-outline-primary:active,
+.btn-outline-primary.active,
+.show > .btn-outline-primary.dropdown-toggle {
+  background-color: #8355ef !important;
+  border-color: #8355ef !important;
+  color: #fff !important;
+}
+
+.btn-outline-primary:disabled,
+.btn-outline-primary.disabled {
+  color: #8355ef !important;
+  border-color: #8355ef !important;
+  opacity: 0.65;
+}
+
+/* Info alert boxes - lighter shade of #946af9 */
+.alert-info {
+  background-color: rgba(148, 106, 249, 0.15) !important;
+  border-color: rgba(148, 106, 249, 0.3) !important;
+  color: #5a4a8a !important;
+}
+
+/* Link buttons in info boxes - darker shade of #946af9 */
+.alert-info .btn-link {
+  color: #6a42c4 !important;
+  text-decoration: underline !important;
+}
+
+.alert-info .btn-link:hover {
+  color: #5a35ba !important;
+}
+
+.alert-info .btn-link:focus {
+  color: #5a35ba !important;
+  box-shadow: 0 0 0 0.2rem rgba(148, 106, 249, 0.25) !important;
+}
