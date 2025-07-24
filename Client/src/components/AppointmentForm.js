@@ -144,7 +144,7 @@ const AppointmentForm = ({ appointment, onSave, onCancel }) => {
                 onChange={handleChange}
                 required
                 disabled={loading}
-                          />
+              />
             </div>
           </div>
           <div className="col-md-6">
