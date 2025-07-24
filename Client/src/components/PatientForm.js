@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { AddressInput } from '@medplum/react';
 import { patientApi, createFhirPatient } from '../services/fhirApi';
+import { formatAddressText } from '../utils/addressFormatter';
 
 const PatientForm = ({ patient, onSave, onCancel }) => {
   const [formData, setFormData] = useState({
@@ -10,24 +11,40 @@ const PatientForm = ({ patient, onSave, onCancel }) => {
     birthDate: '',
     phone: '',
     email: '',
-    address: null,
+    address: undefined,
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
+    const defaultAddress = {
+        use: 'home',
+        type: 'physical',
+        text: '',
+        line: [],
+        city: '',
+        district: '',
+        state: '',
+        postalCode: '',
+        country: ''
+    };
+
   useEffect(() => {
     if (patient) {
-      // Populate form with existing patient data
       const name = patient.name?.[0] || {};
       const phone = patient.telecom?.find(t => t.system === 'phone')?.value || '';
       const email = patient.telecom?.find(t => t.system === 'email')?.value || '';
       const addressData = patient.address?.[0];
       
-      // Address data is already in proper FHIR format with line array
-      // Our backend ensures line[0] = AddressLine1 and line[1] = AddressLine2
-      const address = addressData || null;
+        const address = addressData
+            ? {
+                ...defaultAddress,
+                ...addressData,
+                text: addressData.text || formatAddressText(addressData),
+                line: Array.isArray(addressData.line) ? addressData.line.filter(line => typeof line === 'string') : [],
+            }
+            : { ...defaultAddress };
 
-      setFormData({
+      const newFormData = {
         givenName: name.given?.[0] || '',
         familyName: name.family || '',
         gender: patient.gender || 'unknown',
@@ -35,7 +52,9 @@ const PatientForm = ({ patient, onSave, onCancel }) => {
         phone: phone,
         email: email,
         address: address,
-      });
+      };
+
+      setFormData(newFormData);
     }
   }, [patient]);
 
@@ -45,7 +64,20 @@ const PatientForm = ({ patient, onSave, onCancel }) => {
       ...prev,
       [name]: value,
     }));
-  };
+    };
+
+    const handleAddressChange = (updated) => {
+        const updatedAddress = {
+            ...formData.address,
+            ...updated,
+            text: formatAddressText({ ...formData.address, ...updated }),
+        };
+        setFormData((prev) => ({
+            ...prev,
+            address: updatedAddress,
+        }));
+    };
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -56,10 +88,8 @@ const PatientForm = ({ patient, onSave, onCancel }) => {
       const fhirPatient = createFhirPatient(formData);
       
       if (patient) {
-        // Update existing patient
         await patientApi.update(patient.id, fhirPatient);
       } else {
-        // Create new patient
         await patientApi.create(fhirPatient);
       }
       
@@ -192,17 +222,19 @@ const PatientForm = ({ patient, onSave, onCancel }) => {
             </div>
           </div>
         </div>
-
-        <div className="mb-3">
-          <label className="form-label">Address</label>
-          <AddressInput
-            name="address"
-            value={formData.address}
-            onChange={(value) => setFormData(prev => ({ ...prev, address: value }))}
-            disabled={loading}
-          />
-        </div>
-
+        { formData.address && // Do not remove. This fixed the AddressInput fields not populating bug
+            <div className="mb-3">
+              <label className="form-label">Address</label>
+                <AddressInput
+                    defaultValue={formData.address}
+                    key={ patient?.id || 'new' }
+                    name="address"
+                    value={formData.address}
+                    onChange={handleAddressChange}
+                    disabled={loading}
+                />
+            </div>
+        }
         <div className="d-grid gap-2 d-md-flex justify-content-md-end">
           <button
             type="button"

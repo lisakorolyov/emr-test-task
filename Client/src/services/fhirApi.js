@@ -116,6 +116,8 @@ export const encounterApi = {
   searchByPatient: (patientId) => apiRequest(`${API_BASE_URL}/Encounter/search?patient=${patientId}`),
 };
 
+import { formatAddressText } from '../utils/addressFormatter';
+
 // Helper functions to create FHIR resources
 export const createFhirPatient = (formData) => ({
   resourceType: 'Patient',
@@ -144,7 +146,7 @@ export const createFhirPatient = (formData) => ({
     {
       use: formData.address.use || 'home',
       type: formData.address.type || 'physical',
-      text: formData.address.text || '',
+      text: formatAddressText(formData.address), // Auto-generate formatted address text
       line: formData.address.line || [],  // Standard FHIR line array
       city: formData.address.city || '',
       district: formData.address.district || '',
@@ -152,7 +154,7 @@ export const createFhirPatient = (formData) => ({
       postalCode: formData.address.postalCode || '',
       country: formData.address.country || '',
     },
-  ] : [],
+  ] : undefined,
 });
 
 export const createFhirAppointment = (formData) => ({
