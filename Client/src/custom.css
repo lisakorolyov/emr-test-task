@@ -41,3 +41,25 @@
 .badge.bg-primary {
   background-color: #8355ef !important;
 }
+
+/* Info alert boxes - lighter shade of #946af9 */
+.alert-info {
+  background-color: rgba(148, 106, 249, 0.15) !important;
+  border-color: rgba(148, 106, 249, 0.3) !important;
+  color: #5a4a8a !important;
+}
+
+/* Link buttons in info boxes - darker shade of #946af9 */
+.alert-info .btn-link {
+  color: #6a42c4 !important;
+  text-decoration: underline !important;
+}
+
+.alert-info .btn-link:hover {
+  color: #5a35ba !important;
+}
+
+.alert-info .btn-link:focus {
+  color: #5a35ba !important;
+  box-shadow: 0 0 0 0.2rem rgba(148, 106, 249, 0.25) !important;
+}
