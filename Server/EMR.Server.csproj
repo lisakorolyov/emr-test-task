@@ -21,4 +21,8 @@
     <Folder Include="Migrations\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Remove="**/*Tests.cs" />
+  </ItemGroup>
+
 </Project>
