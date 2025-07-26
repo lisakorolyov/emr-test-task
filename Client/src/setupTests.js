@@ -24,3 +24,19 @@ global.console = {
 
 // Mock fetch for API calls
 global.fetch = jest.fn();
+
+// Cleanup after each test to prevent memory leaks
+afterEach(() => {
+  jest.clearAllMocks();
+  jest.clearAllTimers();
+});
+
+// Setup fake timers to prevent worker process issues
+beforeEach(() => {
+  jest.useFakeTimers();
+});
+
+afterEach(() => {
+  jest.runOnlyPendingTimers();
+  jest.useRealTimers();
+});
