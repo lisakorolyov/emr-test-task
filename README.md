@@ -32,7 +32,7 @@ A full-stack Electronic Medical Records system built with modern web technologie
 
 1. **Clone the repository**
    ```bash
-   git clone [<repository-url>](https://github.com/lisakorolyov/emr-test-task)
+   git clone https://github.com/lisakorolyov/emr-test-task
    cd emr-test-task
    ```
 
