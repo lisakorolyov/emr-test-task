@@ -38,7 +38,7 @@ A full-stack Electronic Medical Records system built with modern web technologie
 
 2. **Start the application**
    ```bash
-   docker-compose up -d
+   docker-compose up
    ```
 
 3. **Access the application**
